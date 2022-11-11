@@ -5,7 +5,7 @@ const {
 
 const router = express.Router()
 
-router.post("/categories", async function(req, res){
+router.post("/", async function(req, res){
     let {name, description} = req.body
     try{
         var cat = await createCategory(name, description )
@@ -16,7 +16,7 @@ router.post("/categories", async function(req, res){
     }
 })
 
-router.get("/categories", async function(req, res){
+router.get("/", async function(req, res){
     try{
         var cat = await getCategories()
         res.json(cat)
@@ -26,7 +26,7 @@ router.get("/categories", async function(req, res){
     }
 })
 
-router.get("/categories/:id", async function(req, res){
+router.get("/:id", async function(req, res){
     let {id}=req.params
     try{
         var cat = await getCategoryById(id)
@@ -37,7 +37,7 @@ router.get("/categories/:id", async function(req, res){
     }
 })
 
-router.put("/categories/:id", async function(req,res){
+router.put("/:id", async function(req,res){
     let{id}=req.params
     let {name, description} = req.body
     try{
@@ -49,7 +49,7 @@ router.put("/categories/:id", async function(req,res){
     }
 })
 
-router.delete("/categories/:id", async function(req, res){
+router.delete("/:id", async function(req, res){
     let{id}=req.params
     try{
         var cat = await deleteCategory(id)
