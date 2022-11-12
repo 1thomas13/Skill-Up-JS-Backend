@@ -4,7 +4,7 @@ const { endpointResponse } = require('../helpers/success')
 const { catchAsync } = require('../helpers/catchAsync');
 const { createUserService, userUpdateService, userDeleteService, updatePasswordService, loginUserService } = require('../services/userServices');
 const { encodeToken } = require('../helpers/tokenizer');
-
+const { ErrorObject } = require('../helpers/error');
 
 
 // example of a controller. First call the service, then build the controller method
@@ -31,9 +31,7 @@ const createUser = async(req, res, next)=>{
     const {user, created} = await createUserService({email: email}, {firstName: firstName, lastName: lastName, email: email, password: password, roleId: roleId});
 
     if(!created){
-      const error = new Error("E-mail exists")
-      error.statusCode = 403
-      throw error;
+      throw new ErrorObject('E-mail exists', 403);
     }
     
     else{
@@ -67,10 +65,7 @@ const updateUser = async(req, res, next)=>{
     const userUpdated = await userUpdateService({id: req.params.id}, userBody);
 
     if(userUpdated === null){
-      endpointResponse({
-        res,
-        message: 'The user does not exist',
-      });
+      throw new ErrorObject('The user does not exist', 404);
     }
     else{
       endpointResponse({
@@ -103,10 +98,7 @@ const updateUserPassword = async(req, res, next) => {
     const passwordUpdated = await updatePasswordService({id: req.params.id}, password, newPassword)
 
     if(passwordUpdated === null){
-      endpointResponse({
-        res,
-        message: 'The user does not exist',
-      });
+      throw new ErrorObject('The user does not exist', 404);
     }
     else if(passwordUpdated){
       endpointResponse({
@@ -115,10 +107,7 @@ const updateUserPassword = async(req, res, next) => {
       });
     }
     else{
-      endpointResponse({
-        res,
-        message: 'Old password is incorrect',
-      });
+      throw new ErrorObject('Old password is incorrect', 400);
     }
   }
   catch(err){
@@ -137,10 +126,7 @@ const deleteUser = catchAsync(async(req, res, next)=>{
     const userDeleted = await userDeleteService({id: idUser})
 
     if(!userDeleted){
-      endpointResponse({
-        res,
-        message: 'The user does not exist',
-      });
+      throw new ErrorObject('The user does not exist', 404);
     }
     
     endpointResponse({
@@ -170,7 +156,7 @@ const loginUser = async(req, res, next) => {
     const loginUser = await loginUserService(email, password)
     console.log(loginUser)
     if (!loginUser || loginUser.Error) {
-      throw new Error('Invalid e-mail or password');
+      throw new ErrorObject('Invalid e-mail or password', 400);
     }
 
     const userData = {
@@ -202,7 +188,7 @@ const loginUser = async(req, res, next) => {
 
   }
 }
-const getUser = catchAsync(async (req, res ,next) => {
+const getUser = async (req, res ,next) => {
   try {
     const response = await User.findOne({where:{userId: req.params.id}})
     if(response){
@@ -213,13 +199,13 @@ const getUser = catchAsync(async (req, res ,next) => {
       })
     }
     else {
-      res.status(404).json({error: 'User not found.', status: 404})
+      throw new ErrorObject('The user does not exist', 400);
     }
   } catch(error){
     const httpError = createHttpEror(error.statusCode, `Error retrieving user - ${error.message}`)
     next(httpError)  
   }
-})
+}
 
 module.exports = {
   get,

@@ -1,6 +1,7 @@
 const { Category } = require("../database/models");
 const { endpointResponse } = require("../helpers/success");
 const createHttpError = require("http-errors");
+const { ErrorObject } = require('../helpers/error');
 
 const createCategory = async function (req, res, next) {
   try {
@@ -53,7 +54,7 @@ const getCategoryById = async function (req, res, next) {
         body: response,
       });
     } else {
-      res.status(404).json({ error: "Category not found", status: 404 });
+      throw new ErrorObject('Category not found', 404);
     }
   } catch (error) {
     const httpError = createHttpError(

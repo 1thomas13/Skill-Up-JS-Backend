@@ -1,6 +1,7 @@
 const { Transaction } = require("../database/models");
 const { endpointResponse } = require("../helpers/success");
 const createHttpError = require("http-errors");
+const { ErrorObject } = require('../helpers/error');
 
 //Validation middleware is needed.
 
@@ -31,7 +32,7 @@ const getTransaction = async (req, res, next) => {
           })
       }
       else{
-          res.status(404).json({error: "Transaction not found", status: 404 })
+          throw new ErrorObject('Transaction not found', 404);
       }
 
   } catch (error) {
@@ -68,7 +69,7 @@ const createTransaction = async (req, res, next) => {
         body: response,
       });
     } else {
-      res.status(404).json({ error: "Transaction not found", status: 404 });
+      throw new ErrorObject('Transaction not found', 404);
     }
   } catch (error) {
     const httpError = createHttpError(
@@ -112,7 +113,7 @@ const updateTransaction = async (req, res, next) => {
         body: response,
       });
     } else {
-      res.status(404).json({ error: "Update not found", status: 404 });
+      throw new ErrorObject('Transaction not found', 404);
     }
   } catch (error) {
     const httpError = createHttpError(
@@ -140,7 +141,7 @@ const deleteTransaction = async (req, res, next) => {
         body: response,
       });
     } else {
-      res.status(404).json({ error: "Operation not found", status: 404 });
+      throw new ErrorObject('Transaction not found', 404);
     }
   } catch (error) {
     const httpError = createHttpError(

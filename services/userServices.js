@@ -17,7 +17,7 @@ const getUser = async(conditions)=>{
     return user;
   }
   catch(err){
-    return new ErrorObject(err.message, 500, err);
+    throw new ErrorObject(err.message, 500, err);
   }
 }
 
@@ -52,7 +52,7 @@ const checkUserExistence = async(conditions)=>{
     }
   }
   catch(err){
-    return new ErrorObject(err.message, 500, err);
+    throw new ErrorObject(err.message, 500, err);
   }
 }
 
@@ -76,7 +76,7 @@ const updatePasswordService = async(conditions, password, newPassword)=>{
     return checkPassword
   }
   catch(err){
-    return new ErrorObject(err.message, 500, err);
+    throw new ErrorObject(err.message, 500, err);
   }
 }
 
@@ -94,7 +94,7 @@ const userUpdateService = async(conditions, body)=>{
     return body;
   }
   catch(err){
-    return new ErrorObject(err.message, 500, err);
+    throw new ErrorObject(err.message, 500, err);
   }
 }
 
@@ -113,7 +113,7 @@ const userDeleteService = async(conditions)=>{
     return userDeleted;
   }
   catch(err){
-    return new ErrorObject(err.message, 500, err);
+    throw new ErrorObject(err.message, 500, err);
   }
 }
 
@@ -133,7 +133,7 @@ const loginUserService = async(email, password)=>{
     return false
   }
   catch(err){
-    return new ErrorObject(err.message, 401, err);
+    throw new ErrorObject(err.message, 401, err);
   }
 }
 module.exports = {
