@@ -58,7 +58,7 @@ const checkUserExistence = async(conditions)=>{
 
 const updatePasswordService = async(conditions, password, newPassword)=>{
   try{
-    const user = await getUser(conditions);
+    const user = await getUserService(conditions);
     if(user === null){
       return null;
     }
