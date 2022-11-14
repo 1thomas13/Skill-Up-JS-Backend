@@ -1,18 +1,13 @@
-const express = require("express");
-const {
-  getTransactions,
-  getTransaction,
-  createTransaction,
-  updateTransaction,
-  deleteTransaction,
-} = require("../controllers/transactions");
-const { makeTransfer } = require("../controllers/transfers");
-const getToken = require("../helpers/getToken");
-const { userAuthenticated } = require("../middlewares/userAuthenticated");
-const { schemaValidator } = require("../middlewares/validator");
-const { transactions } = require("../schemas/transactions");
+const express = require('express')
+const { getTransactions, getTransaction, createTransaction, updateTransaction, deleteTransaction } = require('../controllers/transactions')
+const { makeTransfer } = require('../controllers/transfers')
+const getToken = require('../helpers/getToken')
+const { userAuthenticated } = require('../middlewares/userAuthenticated')
+const { schemaValidator } = require('../middlewares/validator')
+const { transactions } = require('../schemas/transactions')
 
-const router = express.Router();
+const router = express.Router()
+
 
 router.get("/", getToken, userAuthenticated, getTransactions);
 router.post(
@@ -32,4 +27,5 @@ router.put(
 router.post("/transfer", getToken, userAuthenticated, makeTransfer);
 router.delete("/:id", getToken, userAuthenticated, deleteTransaction);
 
-module.exports = router;
+
+module.exports = router

@@ -1,16 +1,18 @@
-const { endpointResponse } = require("../helpers/success");
-const { Transaction } = require("../database/models");
-const createHttpError = require("http-errors");
-const { ErrorObject } = require("../helpers/error");
-const { getUserService } = require("../services/userServices");
+const { endpointResponse } = require('../helpers/success')
+const { Transaction } = require('../database/models')
+const createHttpError = require('http-errors')
+const { ErrorObject } = require('../helpers/error')
+const { getUserService } = require('../services/userServices')
 
 const makeTransfer = async (req, res, next) => {
   try {
+
     const fromUserId = req.body.id;
     const fromUser = await getUserService({ id: fromUserId });
     const toUserId = req.body.selectedId;
     const toUser = await getUserService({ id: toUserId });
     const amount = req.body.amount;
+
     if (fromUserId && toUserId) {
       let outcomeTransaction = {
         userId: fromUserId,
@@ -18,7 +20,7 @@ const makeTransfer = async (req, res, next) => {
         description: `Transfer to ${toUser.firstName} ${toUser.lastName}`,
         date: new Date().toISOString().slice(0, 10),
         categoryId: 2,
-      };
+      }
 
       let incomeTransaction = {
         userId: toUserId,
@@ -26,27 +28,24 @@ const makeTransfer = async (req, res, next) => {
         description: `Received from ${fromUser.firstName} ${fromUser.lastName}`,
         date: new Date().toISOString().slice(0, 10),
         categoryId: 1,
-      };
+      }
 
-      const outcomeResponse = await Transaction.create(outcomeTransaction);
-      const incomeResponse = await Transaction.create(incomeTransaction);
+      const outcomeResponse = await Transaction.create(outcomeTransaction)
+      const incomeResponse = await Transaction.create(incomeTransaction)
       if (outcomeResponse && incomeResponse) {
         endpointResponse({
           res,
-          message: "Operacion exitosa",
+          message: 'Operacion exitosa',
           body: [outcomeResponse, incomeResponse],
-        });
+        })
       } else {
-        throw new ErrorObject("Fail transfer", 500);
+        throw new ErrorObject('Fail transfer', 500)
       }
     }
   } catch (error) {
-    const httpError = createHttpError(
-      error.statusCode,
-      `Error can't transfer - ${error.message}`
-    );
-    next(httpError);
+    const httpError = createHttpError(error.statusCode, `Error can't transfer - ${error.message}`)
+    next(httpError)
   }
-};
+}
 
-module.exports = { makeTransfer };
+module.exports = { makeTransfer }
