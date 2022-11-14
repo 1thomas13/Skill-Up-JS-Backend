@@ -30,6 +30,16 @@ npx sequelize db:create
 npx sequelize db:migrate
 ```
 
+### Ejecutar seeders para poblar la base de datos
+
+```
+npx sequelize-cli db:seed:all
+```
+### Si quieres acceder como administrador despues de ejecutar los seeders las credeenciales del administrador son:
+
+email: admin@gmail.com
+password: 12345678
+
 ### Borrar la base de datos que creamos
 
 ```
@@ -55,17 +65,3 @@ npx sequelize db:drop
 Ejemplo de respuesta negativa:
 ![image](https://user-images.githubusercontent.com/79473217/193651690-f0081ce6-9d2e-43ca-9986-bec8a9082d7f.png)
 
-## 🚑 Helpers basicos:
-
-### catchAsync
-
-Es una función para estandarizar la forma en la que se crean los metodos en los controladores. Para ver mas buscar en helpers/catchAsync.js
-
-### endpointResponse:
-
-Estructura las respuestas positivas de toda la app. Dentro del archivo helpers/success.js podran ver que parametros le pueden pasar.
-
-### ErrorObject:
-
-Un objecto de error, el cual puede recibir varios atributos (pueden verlo en helpers/error.js)
-El mismo es una extensión de el objecto Error nativo de JS. Sirve para devolver errores cuando esten por fuera del controlador, y que los errores sean interceptados por el CATCH que tendran en los controllers.
