@@ -29,7 +29,7 @@ router.put(
   schemaValidator(transactions),
   updateTransaction
 );
-router.post("/transfer", userAuthenticated, makeTransfer);
+router.post("/transfer", getToken, userAuthenticated, makeTransfer);
 router.delete("/:id", getToken, userAuthenticated, deleteTransaction);
 
 module.exports = router;
