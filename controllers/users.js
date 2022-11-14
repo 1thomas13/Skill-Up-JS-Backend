@@ -158,7 +158,7 @@ const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const loginUser = await loginUserService(email, password);
-    console.log(loginUser);
+    
     if (!loginUser || loginUser.Error) {
       throw new ErrorObject("Invalid e-mail or password", 400);
     }
