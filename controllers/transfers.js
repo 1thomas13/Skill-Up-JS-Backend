@@ -6,11 +6,13 @@ const { getUserService } = require('../services/userServices')
 
 const makeTransfer = async (req, res, next) => {
   try {
-    const fromUserId = req.body.id
-    const fromUser = await getUserService({ id: fromUserId })
-    const toUserId = req.body.selectedId
-    const toUser = await getUserService({ id: toUserId })
-    const amount = req.body.amount
+
+    const fromUserId = req.body.id;
+    const fromUser = await getUserService({ id: fromUserId });
+    const toUserId = req.body.selectedId;
+    const toUser = await getUserService({ id: toUserId });
+    const amount = req.body.amount;
+
     if (fromUserId && toUserId) {
       let outcomeTransaction = {
         userId: fromUserId,

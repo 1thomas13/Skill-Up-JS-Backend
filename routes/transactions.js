@@ -8,10 +8,24 @@ const { transactions } = require('../schemas/transactions')
 
 const router = express.Router()
 
-router.get('/', getToken, userAuthenticated, getTransactions)
-router.post('/', getToken, userAuthenticated, schemaValidator(transactions), createTransaction)
-router.put('/:id', getToken, userAuthenticated, schemaValidator(transactions), updateTransaction)
-router.post('/transfer', getToken, userAuthenticated, makeTransfer)
-router.delete('/:id', getToken, userAuthenticated, deleteTransaction)
+
+router.get("/", getToken, userAuthenticated, getTransactions);
+router.post(
+  "/",
+  getToken,
+  userAuthenticated,
+  schemaValidator(transactions),
+  createTransaction
+);
+router.put(
+  "/:id",
+  getToken,
+  userAuthenticated,
+  schemaValidator(transactions),
+  updateTransaction
+);
+router.post("/transfer", getToken, userAuthenticated, makeTransfer);
+router.delete("/:id", getToken, userAuthenticated, deleteTransaction);
+
 
 module.exports = router
